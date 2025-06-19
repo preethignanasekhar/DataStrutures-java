@@ -1,58 +1,124 @@
+import java.util.*;
 class Node{
-int data;
-Node next;
-Node(int data){
-this.data=data;
-this.next=null;
+    int data;
+    Node next;
+    Node(int data){
+        this.data=data;
+        this.next=null;
+    }
 }
-}
-
-class LinkedList{
-Node head,tail;
-public void insertAtEnd(int data){
-Node newnode=new Node(data);
-if(head==null){ 
-   head=newnode;
-   tail=newnode;
-}
-else{
-   tail.next=newnode;
-   tail=newnode;
-}
-}
-public void insertAtBegin(int data){
-   Node newnode=new Node(data);
-   newnode.next=head; //Element add Beginnig
-   head=newnode;
-}
-public void display()
-{
-   Node temp=head;
-   while(temp!=null){ //display lis
-      System.out.println(temp.data);
-      temp=temp.next;
-   }
-}
-   public void specificPosition(int pos,int data){
-   Node newnode=new Node(data);
-   Node temp=head; //Insert at Specific Position
-   for(int i=0;i<pos-1;i++){
-   temp=temp.next;
-}
-   newnode.next=temp.next;
-   temp.next=newnode;
-}
+class LL{
+    Node node;
+    Node head;
+    Node tail;
+    Node temp;
+    Node next;
+    int size=0;
+    public void insertAtFist(int data){
+    Node NewNode= new Node(data);
+    if(head==null){
+        head=tail=NewNode;
+    }
+    else{
+        NewNode.next=head;
+    head=NewNode;
+  
+        
+    }
+      size++;
+    } 
+    public void insertAtEnd(int data){
+    Node NewNode=new Node(data);
+    if(head==null){
+     insertAtFist(data);
+     return;
+    }
+    tail.next=NewNode;
+    tail=NewNode;
+    size++;
+    }
+    public void insertAtSep(int data,int pos){
+    Node NewNode=new Node(data);
+    temp=head;
+    for(int i=0;i<pos-1;i++){
+      temp=temp.next;  
+    }
+    NewNode.next=temp.next;
+    temp.next=NewNode;
+    }
+    public void display(){
+    temp=head;
+    while(temp!=null){ 
+    System.out.print(temp.data+"->");
+    temp=temp.next;
+    }
+    System.out.print("null");
+    System.out.println();
+    }
+    
+    
+    
+    public void deleteAtFist(){
+    head=head.next;
+    size--;
+    } 
+    public void deleteAtEnd(){
+    if(head==null) return;
+    else if(head.next==null){
+        head=tail=null;
+    }
+    else{
+    temp=head;
+    while(temp.next!=tail){
+        temp=temp.next;
+    }
+    temp.next=null;
+    tail=temp;
+     }
+    }
+    public void deleteAtSep(int pos){
+    if(pos==0){
+    deleteAtFist();    
+    }
+    else if(pos==size-1){
+    deleteAtEnd();   
+    }
+    else{
+    temp=head;
+    for(int i=0;i<pos-1;i++){
+      temp=temp.next;  
+    }
+    temp.next=temp.next.next;
+    }
+    size--;
+    }
+    
+    
+    
+    
+    
 }
 class Main{
-public static void main(String args[]){
-   LinkedList link=new LinkedList();
-   link.insertAtEnd(100);
-   link.insertAtEnd(200);
-   link.insertAtEnd(300);
-   link.insertAtEnd(400);
-   link.insertAtBegin(500);
-   link.specificPosition(2,350);
-   link.display();
+    public static void main(String[] args){
+        Scanner s=new Scanner(System.in);
+        LL insert= new LL();
+        int n=s.nextInt();
+        
+        insert.insertAtEnd(n);
+        insert.insertAtFist(10);
+        insert.insertAtFist(30);
+        insert.insertAtFist(100);
+        insert.insertAtFist(200);
+        insert.insertAtFist(300);
+        insert.insertAtSep(50,1);
+        insert.insertAtEnd(201);
+        insert.insertAtEnd(211);
+        insert.insertAtSep(110,4);
+        insert.display();
+        insert.deleteAtFist();
+        insert.deleteAtEnd();
+        insert.deleteAtSep(2);
+        insert.display();
+        
+    }
 }
-}
-
