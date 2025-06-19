@@ -1,116 +1,119 @@
-
 class Node{
-   int data;
-   Node next;
-   Node prev;
-   Node(int data){
-       this.data=data;
-       this.next=null;
-       this.prev=null;
-       
-   }
+    int data;
+    Node next;
+    Node prev;
+    Node(int data){
+        this.data=data;
+        this.next=null;
+        this.prev=null;
+    }
 }
 class DLL{
-    Node head,tail;
-    
-    public void insertAtBegine(int data){
-    Node newnode=new Node(data);
-    if(head==null){
-        head=tail=newnode;
-        
-    }
-    else{
-        newnode.next=head;
-        head.prev=newnode;
-        head=newnode;
-    }
-    }
-    
-    public void insertAtEnd(int data){
-        Node newnode=new Node(data);
-        if(tail==null){
-            head=tail=newnode;
-            
+    Node node;
+    Node head;
+    Node tail;
+    int size=0;
+    public void insertAtFist(int data){
+        Node NewNode=new Node(data);
+        if(head==null){
+            head=tail=NewNode;
         }
         else{
-            tail.next=newnode;
-            newnode.prev=tail;
-            tail=newnode;
+        NewNode.next=head;
+        head.prev=NewNode;
+        head=NewNode;
         }
+        size++;
     }
-    
-    public void deleteAtBegin(){
+    public void insertAtEnd(int data){
+        Node NewNode=new Node(data);
         if(head==null){
-            System.out.print("list is empty");
-            return;
-            
+        insertAtFist(data);
         }
-        if(head==tail){
-            head=tail=null;
+        else{
+        tail.next=NewNode;
+        NewNode.prev=tail;
+        tail=NewNode;
         }
-            else{
-                head=head.next;
-                head.prev=null;
-            }
+        size++;
+    }
+    public void insertAtSpe(int data,int pos){
+        Node NewNode=new Node(data);
+        if(pos==0){
+        insertAtFist(data);   
         }
-        
-    public void deleteAtEnd(){
-        if(head==null){
-            System.out.print("list is empty");
-            return;
-            
+        else if(pos==size){
+        insertAtEnd(data);
         }
-        if(head==tail){
-            head=tail=null;
-        }
-            else{
-                tail=tail.prev;
-                tail.prev=null;
-            }
-        }
-        
-    public void insertSpecific(int pos,int data){
-        Node newnode=new Node(data);
+        else{
         Node temp=head;
-        for(int i=1;i<pos-1&&temp!=null;i++){
-            temp=temp.next;
-            temp.next=newnode;
+
+            for(int i=1;i<pos;i++){
+                temp=temp.next;
+            }
+            NewNode.next=temp.next;
+            NewNode.prev=temp;
+            temp.next.prev=NewNode;
+            temp.next=NewNode;
+            
         }
+    size++;
     }
-    
-    
     public void display(){
-        
-    Node temp=head;
-    if(temp==null){
-        System.out.println("list is empty");
-        
-    }
-    
-    while(temp!=null){
-        System.out.print(temp.data);
-    if(temp.next!=null){
-        System.out.print("<->");
+        Node temp=head;
+        while(temp!=null && temp.next!=null){
+            System.out.print(temp.data+" <-->");
+            temp=temp.next;
         }
-    temp=temp.next;
+        System.out.println("null");
+        
+    }
+    public void deletAtFist(){
+        if(head==null) return;
+        else if(head==tail) head=tail=null;
+        else{
+            head=head.next;
+            head.prev=null;
+        }
+        size--;
+    }
+    public void deletAtEnd(){
+        if(head==null) deletAtFist();
+        else if(head==tail) head=tail=null;
+        else{
+            tail=tail.prev;
+            tail.next=null;
+        }
+        size--;
+    }
+    public void deletAtSpe(int pos){
+        if(pos==0) deletAtFist();
+        else if(pos==size) deletAtEnd();
+        else{
+            Node temp=head;
+            for(int i=1;i<pos;i++){
+                temp=temp.next;
+            }
+            temp.next=temp.next.next;
+            temp.next.next.prev=temp;
+        }
     }
     
-    }
     
 }
-
-public  class Main{
-    public static void main(String[] args){
-        DLL doubly=new DLL();
-        doubly.insertAtBegine(100);
-        
-        doubly.insertAtBegine(300);
-        doubly.insertAtBegine(700);
-        doubly.insertAtBegine(800);
-        doubly.insertAtEnd(200);
-        doubly.insertSpecific(2,600);
-        doubly.deleteAtBegin();
-        doubly.deleteAtEnd();
-        doubly.display();
+class Main{
+    public static void main(String []args){
+        DLL ope=new DLL();
+        ope.insertAtFist(20);
+        ope.insertAtEnd(30);
+        ope.insertAtSpe(40,0);
+        ope.insertAtFist(70);
+        ope.insertAtEnd(35);
+        ope.insertAtSpe(22,3);
+        ope.display();
+        ope.deletAtFist();
+        ope.deletAtSpe(1);
+        ope.deletAtEnd();
+        ope.display();
     }
-} 
+}
